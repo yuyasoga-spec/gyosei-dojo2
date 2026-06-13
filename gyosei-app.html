@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>まいにち行政書士道場</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EBECE6; --surface:#FCFCFA; --surface-2:#F4F4EF;
+  --ink:#1C2230; --ink-soft:#4A5160; --muted:#7A8090;
+  --indigo:#2B4865; --indigo-soft:#3D5A80;
+  --seal:#CF3B2E; --seal-deep:#A82C20;
+  --correct:#2F7D6B; --wrong:#C0563F; --gold:#B8893B;
+  --line:#DEDED6; --line-strong:#CBCBC0;
+  --shadow:0 1px 2px rgba(28,34,48,.06), 0 8px 24px rgba(28,34,48,.06);
+  --r:14px; --serif:"Shippori Mincho", serif; --sans:"Zen Kaku Gothic New", system-ui, sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+.app{max-width:560px;margin:0 auto;min-height:100vh}
+.top{position:sticky;top:0;z-index:20;background:rgba(235,236,230,.86);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid var(--line);padding:calc(env(safe-area-inset-top) + 12px) 18px 12px}
+.top-row{display:flex;align-items:center;gap:11px}
+.seal-mark{width:38px;height:38px;flex:none;border-radius:9px;border:2px solid var(--seal);color:var(--seal);display:grid;place-items:center;font-family:var(--serif);font-weight:800;font-size:20px;background:rgba(207,59,46,.05);transform:rotate(-3deg)}
+.brand{display:flex;flex-direction:column;line-height:1.15}
+.brand b{font-family:var(--serif);font-weight:700;font-size:17px;letter-spacing:.02em}
+.brand span{font-size:11px;color:var(--muted);letter-spacing:.16em}
+.date-pill{margin-left:auto;text-align:right;font-size:11.5px;color:var(--ink-soft)}
+.date-pill b{display:block;font-family:var(--serif);font-size:15px;color:var(--ink)}
+main{padding:18px 16px 28px}
+.view{animation:rise .32s cubic-bezier(.2,.7,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.eyebrow{font-size:11px;letter-spacing:.22em;color:var(--seal);font-weight:700;margin:0 0 4px}
+.h{font-family:var(--serif);font-weight:700;font-size:22px;margin:0 0 14px;letter-spacing:.01em}
+.sub{color:var(--muted);font-size:13px;margin:-8px 0 16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.pad{padding:16px}
+.back{background:none;border:none;color:var(--ink-soft);font-family:var(--sans);font-size:13px;cursor:pointer;padding:0 0 12px;display:flex;align-items:center;gap:5px}
+.back:before{content:"‹";font-size:20px;line-height:1}
+
+/* home top: goal ring + streak */
+.hometop{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;padding:16px;background:linear-gradient(180deg,#FCFCFA,#F7F6F1)}
+.ring{width:96px;height:96px;flex:none;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .rc{font-family:var(--serif);position:absolute;inset:0;display:grid;place-items:center;text-align:center;line-height:1.1}
+.ring .rc b{font-size:24px;color:var(--seal)}
+.ring .rc small{font-size:10px;color:var(--muted)}
+.streak-head{display:flex;align-items:baseline;gap:7px;margin-bottom:10px}
+.streak-num{font-family:var(--serif);font-weight:800;font-size:30px;color:var(--ink);line-height:1}
+.streak-lab{font-size:12.5px;color:var(--ink-soft)}
+.stamps{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.stamp{aspect-ratio:1;border-radius:7px;border:1.5px dashed var(--line-strong);display:grid;place-items:center;font-family:var(--serif);font-size:11px;color:var(--line-strong);background:var(--surface-2)}
+.stamp.done{border:1.5px solid var(--seal);color:#fff;background:var(--seal);transform:rotate(-4deg)}
+.stamp.today{border-color:var(--indigo)}
+.stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:14px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.stat b{display:block;font-family:var(--serif);font-size:24px;line-height:1}
+.stat span{font-size:11px;color:var(--muted)}
+.reco{display:flex;gap:13px;align-items:center;padding:15px;border-left:4px solid var(--seal)}
+.reco .ic{width:40px;height:40px;border-radius:10px;background:rgba(207,59,46,.1);color:var(--seal);display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:18px;flex:none}
+.reco .tx b{display:block;font-size:14px}
+.reco .tx span{font-size:12px;color:var(--muted)}
+.reco button{margin-left:auto}
+
+.menu{display:grid;gap:11px;margin-top:6px}
+.menu-item{display:flex;align-items:center;gap:14px;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 16px;cursor:pointer;box-shadow:var(--shadow);transition:transform .12s;font-family:var(--sans);color:var(--ink)}
+.menu-item:active{transform:scale(.985)}
+.menu-item .ic{width:42px;height:42px;flex:none;border-radius:11px;display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:19px}
+.ic.jiji{background:rgba(207,59,46,.1);color:var(--seal)}
+.ic.news{background:rgba(43,72,101,.1);color:var(--indigo)}
+.ic.law{background:rgba(47,125,107,.12);color:var(--correct)}
+.ic.read{background:rgba(184,137,59,.14);color:var(--gold)}
+.ic.rev{background:rgba(168,44,32,.1);color:var(--seal-deep)}
+.ic.mock{background:rgba(28,34,48,.08);color:var(--ink)}
+.ic.tool{background:rgba(61,90,128,.12);color:var(--indigo-soft)}
+.menu-item .tx b{display:block;font-size:15px;font-weight:700}
+.menu-item .tx span{font-size:12px;color:var(--muted)}
+.menu-item .arw{margin-left:auto;color:var(--line-strong);font-size:20px}
+.badge{margin-left:auto;background:var(--seal);color:#fff;font-size:11px;font-weight:700;border-radius:20px;padding:2px 9px;min-width:22px;text-align:center}
+
+.btn{font-family:var(--sans);font-weight:700;font-size:15px;border:none;border-radius:12px;padding:14px 18px;cursor:pointer;width:100%;transition:transform .12s,opacity .2s}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--ink);color:#fff}
+.btn.seal{background:var(--seal);color:#fff}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line-strong)}
+.btn[disabled]{opacity:.5;cursor:default}
+.btn.sm{width:auto;padding:9px 14px;font-size:13px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{border:1px solid var(--line-strong);background:var(--surface);color:var(--ink-soft);border-radius:30px;padding:8px 14px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans)}
+.chip.on{background:var(--indigo);border-color:var(--indigo);color:#fff}
+.chip.seal-on.on{background:var(--seal);border-color:var(--seal)}
+.field-label{font-size:12px;color:var(--muted);letter-spacing:.08em;margin:0 0 7px;font-weight:700}
+
+/* quiz */
+.qwrap{position:relative}
+.timerbar{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft);margin-bottom:10px;font-family:var(--serif)}
+.timerbar b{color:var(--ink);font-size:16px}
+.qmeta{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:7px;background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--line)}
+.tag.cat{background:rgba(43,72,101,.1);color:var(--indigo);border-color:transparent}
+.qcount{margin-left:auto;font-size:12px;color:var(--muted);font-family:var(--serif)}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+.qtext{font-size:16px;line-height:1.85;margin:0 0 4px}
+.passage{font-size:14.5px;line-height:1.95;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:14px;margin:6px 0 14px}
+.blank{color:var(--seal);font-weight:700;font-family:var(--serif)}
+.ox-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.ox{border:2px solid var(--line-strong);background:var(--surface);border-radius:14px;padding:18px 0;font-family:var(--serif);font-size:30px;font-weight:700;cursor:pointer;color:var(--ink-soft);transition:.15s}
+.ox:active{transform:scale(.97)}
+.ox.picked-correct{border-color:var(--correct);background:rgba(47,125,107,.1);color:var(--correct)}
+.ox.picked-wrong{border-color:var(--wrong);background:rgba(192,86,63,.1);color:var(--wrong)}
+.ox.reveal{border-color:var(--correct);color:var(--correct)}
+.opt-row{display:block;width:100%;text-align:left;border:1.5px solid var(--line-strong);background:var(--surface);border-radius:11px;padding:13px 14px;margin-top:9px;font-family:var(--sans);font-size:14.5px;color:var(--ink);cursor:pointer;line-height:1.6}
+.opt-row .on{display:inline-block;width:22px;height:22px;border-radius:6px;background:var(--surface-2);color:var(--ink-soft);text-align:center;line-height:22px;font-weight:700;font-size:13px;margin-right:9px;font-family:var(--serif)}
+.opt-row.picked-correct{border-color:var(--correct);background:rgba(47,125,107,.1)}
+.opt-row.picked-correct .on{background:var(--correct);color:#fff}
+.opt-row.picked-wrong{border-color:var(--wrong);background:rgba(192,86,63,.1)}
+.opt-row.picked-wrong .on{background:var(--wrong);color:#fff}
+.opt-row.reveal{border-color:var(--correct)}
+.opt-row.reveal .on{background:var(--correct);color:#fff}
+.blank-grp{margin:12px 0}
+.blank-grp>span{font-weight:700;font-family:var(--serif);color:var(--indigo);margin-right:6px}
+select.opt{width:100%;padding:12px;border:1px solid var(--line-strong);border-radius:10px;background:var(--surface);font-family:var(--sans);font-size:15px;color:var(--ink);margin-top:6px}
+textarea.essay{width:100%;min-height:96px;padding:13px;border:1px solid var(--line-strong);border-radius:10px;font-family:var(--sans);font-size:15px;line-height:1.8;resize:vertical;color:var(--ink);background:var(--surface)}
+.charcount{text-align:right;font-size:11px;color:var(--muted);margin-top:4px}
+.fb{margin-top:14px;border-radius:12px;padding:14px;border:1px solid var(--line);animation:rise .3s}
+.fb.ok{background:rgba(47,125,107,.08);border-color:rgba(47,125,107,.3)}
+.fb.ng{background:rgba(192,86,63,.08);border-color:rgba(192,86,63,.3)}
+.fb-head{font-family:var(--serif);font-weight:700;font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.fb.ok .fb-head{color:var(--correct)}
+.fb.ng .fb-head{color:var(--wrong)}
+.fb p{margin:6px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.75}
+.model-ans{background:var(--surface);border:1px dashed var(--line-strong);border-radius:9px;padding:10px 12px;margin-top:8px;font-size:14px}
+.model-ans b{font-family:var(--serif)}
+.kw{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.kw span{font-size:11.5px;background:rgba(43,72,101,.1);color:var(--indigo);border-radius:6px;padding:3px 8px;font-weight:700}
+.selfscore{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.stampfx{position:absolute;top:8px;right:8px;width:78px;height:78px;border-radius:50%;border:4px solid var(--seal);color:var(--seal);display:grid;place-items:center;font-family:var(--serif);font-weight:800;font-size:38px;pointer-events:none;background:rgba(207,59,46,.07);opacity:0;z-index:5}
+.stampfx.go{animation:stamp .7s cubic-bezier(.2,1.4,.3,1) forwards}
+@keyframes stamp{0%{opacity:0;transform:scale(2.2) rotate(18deg)}35%{opacity:1;transform:scale(.92) rotate(-8deg)}55%{transform:scale(1.04) rotate(-6deg)}100%{opacity:1;transform:scale(1) rotate(-7deg)}}
+
+.news-item{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:15px;margin-bottom:12px;box-shadow:var(--shadow)}
+.news-item .nt{font-weight:700;font-size:15px;margin:0 0 6px;line-height:1.55}
+.news-item .ns{font-size:13px;color:var(--ink-soft);margin:0 0 10px}
+.news-item .npt{font-size:12px;color:var(--indigo);background:rgba(43,72,101,.07);border-radius:8px;padding:8px 10px;margin-bottom:10px}
+.news-item .npt b{font-family:var(--serif)}
+
+.loader{text-align:center;padding:40px 10px;color:var(--muted)}
+.spinner{width:34px;height:34px;border:3px solid var(--line);border-top-color:var(--seal);border-radius:50%;margin:0 auto 14px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:34px 16px;color:var(--muted)}
+.empty .em-seal{width:60px;height:60px;margin:0 auto 12px;border:2px dashed var(--line-strong);border-radius:14px;display:grid;place-items:center;font-family:var(--serif);font-size:28px;color:var(--line-strong)}
+.errbox{background:rgba(192,86,63,.08);border:1px solid rgba(192,86,63,.35);border-radius:12px;padding:14px;font-size:13.5px;color:var(--wrong)}
+.summary{text-align:center;padding:24px 16px}
+.summary .big{font-family:var(--serif);font-size:46px;font-weight:800;color:var(--seal);line-height:1}
+.summary .lab{color:var(--ink-soft);margin:4px 0 18px}
+
+/* simulator */
+.simrow{display:flex;align-items:center;gap:10px;margin:14px 0}
+.simrow .nm{flex:1}
+.simrow .nm b{display:block;font-size:14px}
+.simrow .nm span{font-size:11px;color:var(--muted)}
+.stepper{display:flex;align-items:center;gap:0;border:1px solid var(--line-strong);border-radius:10px;overflow:hidden}
+.stepper button{width:38px;height:40px;border:none;background:var(--surface-2);font-size:20px;font-family:var(--serif);cursor:pointer;color:var(--ink)}
+.stepper input{width:50px;height:40px;border:none;text-align:center;font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink);background:var(--surface)}
+.gauge{margin:10px 0}
+.gauge .gl{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
+.gauge .gl b{font-family:var(--serif)}
+.gauge .track{height:12px;background:var(--surface-2);border-radius:8px;overflow:hidden;position:relative;border:1px solid var(--line)}
+.gauge .fill{height:100%;border-radius:8px;transition:width .6s cubic-bezier(.2,.7,.2,1)}
+.gauge .thr{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.verdict{text-align:center;padding:18px;border-radius:14px;margin-top:8px;font-family:var(--serif);font-weight:800;font-size:22px}
+.verdict.pass{background:rgba(207,59,46,.08);color:var(--seal);border:2px solid var(--seal)}
+.verdict.fail{background:var(--surface-2);color:var(--ink-soft);border:2px solid var(--line-strong)}
+
+/* stats bars */
+.bar-item{margin-bottom:12px}
+.bar-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+.bar-top b{font-weight:700}
+.bar-top span{color:var(--muted);font-size:11.5px}
+.bar-track{height:9px;background:var(--surface-2);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.bar-fill{height:100%;border-radius:6px}
+
+/* chat */
+.bubble{max-width:88%;padding:11px 14px;border-radius:14px;margin-bottom:10px;font-size:14px;line-height:1.7;white-space:pre-wrap}
+.bubble.me{margin-left:auto;background:var(--indigo);color:#fff;border-bottom-right-radius:4px}
+.bubble.ai{background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:4px}
+.chat-input{display:flex;gap:8px;margin-top:10px;position:sticky;bottom:calc(82px + env(safe-area-inset-bottom));background:var(--bg);padding:6px 0}
+.chat-input textarea{flex:1;border:1px solid var(--line-strong);border-radius:12px;padding:11px;font-family:var(--sans);font-size:14px;resize:none;min-height:44px;max-height:120px;background:var(--surface)}
+.chat-input button{width:54px;flex:none;border-radius:12px;border:none;background:var(--seal);color:#fff;font-weight:700;cursor:pointer}
+
+.note{font-size:11.5px;color:var(--muted);line-height:1.7;margin-top:18px;padding:0 2px}
+.divider{height:1px;background:var(--line);margin:18px 0}
+.cb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft);margin:10px 0}
+.cb input{width:18px;height:18px;accent-color:var(--seal)}
+
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(252,252,250,.92);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 4px calc(6px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto}
+.nav button{background:none;border:none;cursor:pointer;padding:7px 2px 4px;border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-family:var(--sans);position:relative}
+.nav button .ni{font-family:var(--serif);font-weight:700;font-size:17px;line-height:1}
+.nav button .nl{font-size:10px;letter-spacing:.04em}
+.nav button.on{color:var(--seal)}
+.nav button.on .ni{color:var(--seal)}
+.nav .dot{position:absolute;top:4px;right:calc(50% - 16px);width:7px;height:7px;border-radius:50%;background:var(--seal)}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="top-row">
+      <div class="seal-mark">行</div>
+      <div class="brand"><b>まいにち行政書士道場</b><span>GYOSEI DAILY DOJO</span></div>
+      <div class="date-pill" id="datePill"></div>
+    </div>
+  </header>
+  <main id="view"></main>
+</div>
+<nav class="nav" id="nav">
+  <button data-v="home" class="on"><span class="ni">家</span><span class="nl">ホーム</span></button>
+  <button data-v="practice"><span class="ni">演</span><span class="nl">演習</span></button>
+  <button data-v="mock"><span class="ni">試</span><span class="nl">模試</span></button>
+  <button data-v="review"><span class="ni">復</span><span class="nl">復習</span></button>
+  <button data-v="dojo"><span class="ni">道</span><span class="nl">道場</span></button>
+</nav>
+
+<script>
+/* ===== storage (localStorage; ホスティングして使う想定) ===== */
+const MEM={};
+async function dbGet(k){try{const v=localStorage.getItem('gsd_'+k);if(v!==null)return JSON.parse(v);}catch(e){}return k in MEM?MEM[k]:null;}
+async function dbSet(k,v){MEM[k]=v;try{localStorage.setItem('gsd_'+k,JSON.stringify(v));}catch(e){}}
+
+/* ===== state ===== */
+let progress={totalAnswered:0,totalCorrect:0,studyDays:[],byCat:{},daily:{}};
+let wrongQueue=[]; let settings={dailyGoal:10};
+const SRS_INT=[1,3,7,16,35]; // days by box before graduating at box>=5
+
+function pad(n){return String(n).padStart(2,'0');}
+function todayKey(){const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function keyOf(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function addDays(key,n){const[y,m,dd]=key.split('-').map(Number);const d=new Date(y,m-1,dd);d.setDate(d.getDate()+n);return keyOf(d);}
+function fmtDateJa(){const d=new Date();const w=['日','月','火','水','木','金','土'][d.getDay()];return{top:`${d.getMonth()+1}月${d.getDate()}日`,sub:`令和${d.getFullYear()-2018}年 (${w})`};}
+
+async function loadAll(){
+  progress=(await dbGet('progress'))||{totalAnswered:0,totalCorrect:0,studyDays:[],byCat:{},daily:{}};
+  progress.daily=progress.daily||{}; progress.byCat=progress.byCat||{}; progress.studyDays=progress.studyDays||[];
+  wrongQueue=(await dbGet('wrongQueue'))||[];
+  settings=(await dbGet('settings'))||{dailyGoal:10};
+}
+function markStudiedToday(){const t=todayKey();if(!progress.studyDays.includes(t))progress.studyDays.push(t);}
+function recordAnswer(cat,correct){
+  progress.totalAnswered++; if(correct)progress.totalCorrect++;
+  progress.byCat[cat]=progress.byCat[cat]||{a:0,c:0}; progress.byCat[cat].a++; if(correct)progress.byCat[cat].c++;
+  const t=todayKey(); progress.daily[t]=progress.daily[t]||{a:0,c:0}; progress.daily[t].a++; if(correct)progress.daily[t].c++;
+  markStudiedToday(); dbSet('progress',progress);
+}
+function streakCount(){const set=new Set(progress.studyDays);let n=0;let p=new Date();if(!set.has(keyOf(p)))p.setDate(p.getDate()-1);while(set.has(keyOf(p))){n++;p.setDate(p.getDate()-1);}return n;}
+function weakest(){
+  let best=null;
+  for(const c in progress.byCat){const s=progress.byCat[c];if(s.a>=4){const acc=s.c/s.a;if(!best||acc<best.acc)best={cat:c,acc,a:s.a};}}
+  return best;
+}
+function dueCount(){const t=todayKey();return wrongQueue.filter(w=>!w.due||w.due<=t).length;}
+
+/* ===== API（ユーザー自身のキーをブラウザから直接利用） ===== */
+const API_MODEL="claude-sonnet-4-6";
+function getKey(){try{return localStorage.getItem('anthropicKey')||'';}catch(e){return '';}}
+async function callClaude({system,user,messages,useSearch}){
+  const key=getKey();
+  if(!key)throw new Error("APIキーが未登録です（道場→目標と設定 で登録してください）");
+  const body={model:API_MODEL,max_tokens:1500,messages:messages||[{role:"user",content:user}]};
+  if(system)body.system=system;
+  if(useSearch)body.tools=[{type:"web_search_20250305",name:"web_search",max_uses:5}];
+  let res;
+  try{
+    res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify(body)});
+  }catch(e){throw new Error("通信に失敗しました（ネット接続を確認）");}
+  if(!res.ok){let d='HTTP '+res.status;try{const j=await res.json();if(j.error&&j.error.message)d=j.error.message;}catch(_){}throw new Error(d);}
+  const data=await res.json();
+  return (data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+}
+function extractJSON(t){const a=t.indexOf('['),b=t.lastIndexOf(']'),o=t.indexOf('{'),c=t.lastIndexOf('}');let s=null;if(a!==-1&&b!==-1&&(o===-1||a<o))s=t.slice(a,b+1);else if(o!==-1&&c!==-1)s=t.slice(o,c+1);if(!s)throw new Error("形式エラー");return JSON.parse(s);}
+
+/* ===== routing ===== */
+let active='home';
+const view=document.getElementById('view');
+document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.v)));
+function go(v){
+  if(window._mockInt){clearInterval(window._mockInt);window._mockInt=null;}
+  active=v;
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+  window.scrollTo(0,0);
+  ({home:renderHome,practice:renderPractice,mock:renderMock,review:renderReview,dojo:renderDojo}[v]||renderHome)();
+}
+function navBadges(){
+  document.querySelectorAll('#nav button .dot').forEach(d=>d.remove());
+  const due=dueCount();
+  if(due>0){const btn=document.querySelector('#nav button[data-v="review"]');if(btn&&!btn.querySelector('.dot')){const s=document.createElement('span');s.className='dot';btn.appendChild(s);}}
+}
+
+/* ===== HOME ===== */
+function renderHome(){
+  const s=streakCount();
+  const acc=progress.totalAnswered?Math.round(progress.totalCorrect/progress.totalAnswered*100):0;
+  const goal=settings.dailyGoal||10;
+  const todayA=(progress.daily[todayKey()]||{a:0}).a;
+  const pct=Math.min(1,todayA/goal); const C=2*Math.PI*40; const off=C*(1-pct);
+  const set=new Set(progress.studyDays);const cells=[];
+  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=keyOf(d);const done=set.has(k);const td=i===0;cells.push(`<div class="stamp ${done?'done':''} ${td?'today':''}">${done?'済':(d.getMonth()+1+'/'+d.getDate())}</div>`);}
+  const w=weakest(); const due=dueCount(); const noKey=!getKey();
+  view.innerHTML=`<div class="view">
+    ${noKey?`<div class="card reco" style="margin-bottom:12px;border-left-color:var(--seal)"><div class="ic">鍵</div><div class="tx"><b>最初にAPIキーを登録しよう</b><span>これがないとAI出題は動きません</span></div><button class="btn seal sm" onclick="renderGoal()">設定</button></div>`:''}
+    <div class="card hometop">
+      <div class="ring">
+        <svg width="96" height="96"><circle cx="48" cy="48" r="40" fill="none" stroke="#E6E6DE" stroke-width="9"/>
+        <circle cx="48" cy="48" r="40" fill="none" stroke="${pct>=1?'var(--correct)':'var(--seal)'}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}"/></svg>
+        <div class="rc"><b>${todayA}</b><small>/ ${goal}問</small></div>
+      </div>
+      <div>
+        <div class="streak-head"><span class="streak-num">${s}</span><span class="streak-lab">日連続　学習中</span></div>
+        <div class="stamps">${cells.join('')}</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b>${progress.totalAnswered}</b><span>解いた問題</span></div>
+      <div class="stat"><b>${acc}<small style="font-size:14px">%</small></b><span>正答率</span></div>
+      <div class="stat"><b style="color:var(--seal)">${wrongQueue.length}</b><span>復習待ち</span></div>
+    </div>
+    ${due>0?`<div class="card reco" style="margin-bottom:12px;border-left-color:var(--seal-deep)"><div class="ic" style="background:rgba(168,44,32,.1);color:var(--seal-deep)">復</div><div class="tx"><b>今日の復習が ${due}問</b><span>忘れた頃にもう一度（間隔反復）</span></div><button class="btn seal sm" onclick="startReview(true)">解く</button></div>`:''}
+    ${w?`<div class="card reco" style="margin-bottom:12px"><div class="ic">弱</div><div class="tx"><b>苦手は「${w.cat}」</b><span>正答率 ${Math.round(w.acc*100)}%　ここを鍛えよう</span></div><button class="btn ghost sm" onclick="openLawCat('${w.cat}')">挑む</button></div>`:''}
+    <p class="eyebrow">TODAY'S TRAINING</p>
+    <h2 class="h" style="margin-bottom:12px">今日の稽古</h2>
+    <div class="menu">
+      <button class="menu-item" onclick="go('practice')"><span class="ic jiji">演</span><span class="tx"><b>演習する</b><span>時事・ニュース・法令・文章理解</span></span><span class="arw">›</span></button>
+      <button class="menu-item" onclick="go('mock')"><span class="ic mock">試</span><span class="tx"><b>ミニ模試</b><span>時間を計って力試し</span></span><span class="arw">›</span></button>
+      <button class="menu-item" onclick="go('review')"><span class="ic rev">復</span><span class="tx"><b>まちがい復習</b><span>間違えた問題をもう一度</span></span>${wrongQueue.length?`<span class="badge">${wrongQueue.length}</span>`:'<span class="arw">›</span>'}</button>
+      <button class="menu-item" onclick="go('dojo')"><span class="ic tool">道</span><span class="tx"><b>道場ツール</b><span>合格判定・AI相談・週次レビュー・統計</span></span><span class="arw">›</span></button>
+    </div>
+    <p class="note">※ 出題は AI が最新の時事・法令をもとに毎回生成します。基礎知識は14問中6問（24点）以上が足切りライン、合格は法令122点・基礎24点・総合180点が同時条件です。最新の法改正・事実は本試験前にテキストでも確認を。</p>
+  </div>`;
+  navBadges();
+}
+
+/* ===== quiz engine ===== */
+let quiz=[],qi=0,quizCtx='',quizMode='normal',mockStart=0;
+function startQuiz(items,ctx,mode){quiz=items;qi=0;quizCtx=ctx;quizMode=mode||'normal';if(quizMode==='mock'){mockStart=Date.now();}renderQuestion();}
+function renderQuestion(){
+  if(window._mockInt){clearInterval(window._mockInt);window._mockInt=null;}
+  if(qi>=quiz.length)return renderSummary();
+  const q=quiz[qi];
+  const counter=`<span class="qcount">${qi+1} / ${quiz.length}</span>`;
+  const timer=quizMode==='mock'?`<div class="timerbar">⏱ <b id="tmr">0:00</b><span>　目安 1問3分</span></div>`:'';
+  const meta=`<div class="qmeta"><span class="tag cat">${q.category||'時事'}</span>${q.format?`<span class="tag">${q.format}</span>`:''}${q.topic?`<span class="tag">${q.topic}</span>`:''}${counter}</div>`;
+  let inner='';
+  if(q.type==='ox'){
+    inner=`${meta}<div class="qcard"><p class="qtext">${esc(q.statement)}</p><div class="ox-row"><button class="ox" id="oxT" onclick="answerOX(true)">◯</button><button class="ox" id="oxF" onclick="answerOX(false)">✕</button></div><div id="fb"></div></div>`;
+  }else if(q.type==='single'){
+    const labels=['ア','イ','ウ','エ','オ'];
+    const opts=(q.options||[]).map((o,i)=>`<button class="opt-row" id="op-${i}" onclick="answerSingle(${i})"><span class="on">${labels[i]||i+1}</span>${esc(o)}</button>`).join('');
+    const psg=q.passage?`<div class="passage">${nl2br(esc(q.passage))}</div>`:'';
+    inner=`${meta}<div class="qcard">${psg}<p class="qtext">${esc(q.question)}</p>${opts}<div id="fb"></div></div>`;
+  }else if(q.type==='choice'){
+    const psg=(q.passage||'').replace(/【(ア|イ|ウ|エ)】/g,'<span class="blank">（ $1 ）</span>');
+    const sel=['ア','イ','ウ','エ'].map(bl=>`<div class="blank-grp"><span>${bl}</span><select class="opt" id="sel-${bl}"><option value="">— 語句を選ぶ —</option>${(q.options||[]).map(o=>`<option value="${escA(o)}">${esc(o)}</option>`).join('')}</select></div>`).join('');
+    inner=`${meta}<div class="qcard"><div class="passage">${nl2br(psg)}</div>${sel}<button class="btn primary" style="margin-top:14px" onclick="answerChoice()">解答する</button><div id="fb"></div></div>`;
+  }else if(q.type==='essay'){
+    inner=`${meta}<div class="qcard"><p class="qtext">${esc(q.prompt)}</p><textarea class="essay" id="essay" maxlength="120" oninput="document.getElementById('cc').textContent=this.value.length+' 字'" placeholder="40字程度で記述してください"></textarea><div class="charcount" id="cc">0 字</div><button class="btn primary" onclick="revealEssay()">模範解答を見る</button><div id="fb"></div></div>`;
+  }
+  view.innerHTML=`<div class="view"><div class="qwrap" id="qwrap">${timer}${inner}</div></div>`;
+  if(quizMode==='mock')window._mockInt=setInterval(updTimer,1000),updTimer();
+}
+function updTimer(){const el=document.getElementById('tmr');if(!el){clearInterval(window._mockInt);return;}const s=Math.floor((Date.now()-mockStart)/1000);el.textContent=Math.floor(s/60)+':'+pad(s%60);}
+function sealFx(l){const w=document.getElementById('qwrap');if(!w)return;const f=document.createElement('div');f.className='stampfx';f.textContent=l;w.appendChild(f);requestAnimationFrame(()=>f.classList.add('go'));setTimeout(()=>f.remove(),1600);}
+
+function handleSRS(q,correct){
+  if(q._review&&q._id){
+    const it=wrongQueue.find(w=>w._id===q._id); if(!it)return;
+    if(correct){it.box=(it.box||0)+1;if(it.box>=5){removeWrong(q._id);}else{it.due=addDays(todayKey(),SRS_INT[it.box]||7);dbSet('wrongQueue',wrongQueue);}}
+    else{it.box=0;it.due=addDays(todayKey(),1);dbSet('wrongQueue',wrongQueue);}
+  }else if(!correct){addWrong(q);}
+}
+function answerOX(val){
+  const q=quiz[qi];if(q.answered)return;q.answered=true;
+  const correct=(val===q.answer);q.userCorrect=correct;
+  const t=document.getElementById('oxT'),f=document.getElementById('oxF');t.onclick=f.onclick=null;
+  (val?t:f).classList.add(correct?'picked-correct':'picked-wrong');
+  if(!correct)(q.answer?t:f).classList.add('reveal');
+  recordAnswer(q.category||'時事',correct);handleSRS(q,correct);
+  if(correct)sealFx('正');
+  showFB(correct,q.explanation);navBadges();
+}
+function answerSingle(idx){
+  const q=quiz[qi];if(q.answered)return;q.answered=true;
+  const correct=(idx===q.answer);q.userCorrect=correct;
+  (q.options||[]).forEach((o,i)=>{const el=document.getElementById('op-'+i);if(el)el.onclick=null;});
+  const picked=document.getElementById('op-'+idx);if(picked)picked.classList.add(correct?'picked-correct':'picked-wrong');
+  if(!correct){const r=document.getElementById('op-'+q.answer);if(r)r.classList.add('reveal');}
+  recordAnswer(q.category,correct);handleSRS(q,correct);
+  if(correct)sealFx('正');
+  showFB(correct,q.explanation);navBadges();
+}
+function answerChoice(){
+  const q=quiz[qi];if(q.answered)return;const bl=['ア','イ','ウ','エ'];const p={};
+  for(const b of bl)p[b]=document.getElementById('sel-'+b).value;
+  if(bl.some(b=>!p[b])){alert('すべての空欄を選んでください');return;}
+  q.answered=true;let ok=0;bl.forEach(b=>{if(p[b]===q.answers[b])ok++;});
+  const correct=ok===4;q.userCorrect=correct;
+  recordAnswer(q.category,correct);handleSRS(q,correct);
+  if(correct)sealFx('正');
+  const detail=bl.map(b=>`<div style="font-size:13px;margin-top:4px">${b}：<b style="color:${p[b]===q.answers[b]?'var(--correct)':'var(--wrong)'}">${esc(p[b])}</b>　正解 → ${esc(q.answers[b])}</div>`).join('');
+  showFB(correct,q.explanation,`<div style="margin-top:6px">${ok} / 4 正解</div>${detail}`);navBadges();
+}
+function revealEssay(){
+  const q=quiz[qi];q.userText=document.getElementById('essay').value.trim();
+  document.getElementById('fb').innerHTML=`<div class="fb ok"><div class="fb-head">模範解答</div><div class="model-ans"><b>${esc(q.model)}</b></div><div class="kw">${(q.keywords||[]).map(k=>`<span>${esc(k)}</span>`).join('')}</div><p>${esc(q.explanation||'')}</p><button class="btn ghost sm" style="margin-top:12px;width:100%" onclick="aiGrade()" id="aiBtn">AIに採点してもらう</button><div class="selfscore"><button class="btn ghost" onclick="essayScore(true)">書けた（正解）</button><button class="btn ghost" onclick="essayScore(false)">書けなかった</button></div><div id="aiResult"></div></div>`;
+}
+async function aiGrade(){
+  const q=quiz[qi];const btn=document.getElementById('aiBtn');const out=document.getElementById('aiResult');
+  if(!q.userText){out.innerHTML='<p style="font-size:12px;color:var(--muted)">解答が入力されていません。</p>';return;}
+  btn.disabled=true;btn.textContent='採点中…';
+  try{
+    const txt=await callClaude({system:"行政書士試験の記述式採点者。出力はJSONオブジェクトのみ。前置き・マークダウン禁止。",user:`記述式を20点満点で採点。\n問題:${q.prompt}\n模範解答:${q.model}\nキーワード:${(q.keywords||[]).join('、')}\n受験生の解答:${q.userText}\nJSONのみ:{"score":0〜20の整数,"good":"良い点30字","improve":"改善点50字"}`});
+    const r=extractJSON(txt);
+    out.innerHTML=`<div class="model-ans" style="margin-top:12px"><b style="font-family:var(--serif);font-size:18px;color:var(--seal)">${r.score} / 20点</b><p style="margin:6px 0 0;font-size:13px">よい点：${esc(r.good||'')}</p><p style="margin:4px 0 0;font-size:13px">改善：${esc(r.improve||'')}</p></div>`;btn.style.display='none';
+  }catch(e){out.innerHTML=`<p style="font-size:12px;color:var(--wrong)">採点できませんでした。自己採点をお使いください。</p>`;btn.disabled=false;btn.textContent='AIに採点してもらう';}
+}
+function essayScore(correct){const q=quiz[qi];if(q.answered)return;q.answered=true;q.userCorrect=correct;recordAnswer(q.category,correct);handleSRS(q,correct);if(correct)sealFx('正');document.getElementById('fb').insertAdjacentHTML('beforeend',nextBtnHtml());navBadges();}
+function showFB(correct,exp,extra){document.getElementById('fb').innerHTML=`<div class="fb ${correct?'ok':'ng'}"><div class="fb-head">${correct?'正解':'不正解'}　${correct?'印を授ける':'復習に追加'}</div>${extra||''}<p>${esc(exp||'')}</p></div>${nextBtnHtml()}`;}
+function nextBtnHtml(){const last=qi>=quiz.length-1;return `<button class="btn primary" style="margin-top:14px" onclick="nextQ()">${last?'結果を見る':'次の問題へ'}</button>`;}
+function nextQ(){qi++;renderQuestion();}
+function renderSummary(){
+  if(window._mockInt){clearInterval(window._mockInt);window._mockInt=null;}
+  const ans=quiz.length,ok=quiz.filter(q=>q.userCorrect).length;const rate=ans?Math.round(ok/ans*100):0;
+  let extra='';
+  if(quizMode==='mock'){const s=Math.floor((Date.now()-mockStart)/1000);const tm=Math.floor(s/60)+'分'+pad(s%60)+'秒';extra=`<div class="lab" style="margin-top:-8px">所要 ${tm}　正答率 ${rate}%</div><p style="font-size:13px;color:var(--ink-soft);max-width:320px;margin:0 auto 18px">${rate>=60?'本試験換算でも合格圏（60%）のペースです。この調子で。':'本試験の合格ラインは60%。間違えた問題は復習に入っています。'}</p>`;}
+  view.innerHTML=`<div class="view"><div class="summary card pad"><div class="big">${ok}<span style="font-size:24px">/${ans}</span></div><div class="lab">${quizCtx} お疲れさまでした</div>${extra}<button class="btn seal" onclick="go('home')">ホームに戻る</button></div></div>`;
+}
+
+/* ===== wrong queue / SRS ===== */
+function addWrong(q){const c=JSON.parse(JSON.stringify(q));delete c.answered;delete c.userCorrect;delete c.userText;c._id=Date.now()+'_'+Math.random().toString(36).slice(2,7);c.box=0;c.due=todayKey();c.added=todayKey();wrongQueue.push(c);dbSet('wrongQueue',wrongQueue);}
+function removeWrong(id){wrongQueue=wrongQueue.filter(w=>w._id!==id);dbSet('wrongQueue',wrongQueue);}
+
+/* ===== PRACTICE HUB ===== */
+function renderPractice(){
+  view.innerHTML=`<div class="view">
+    <p class="eyebrow">PRACTICE</p>
+    <h2 class="h" style="margin-bottom:12px">演習する</h2>
+    <div class="menu">
+      <button class="menu-item" onclick="renderJiji()"><span class="ic jiji">時</span><span class="tx"><b>時事の一問一答</b><span>最新ニュースから◯×で5問</span></span><span class="arw">›</span></button>
+      <button class="menu-item" onclick="renderNews()"><span class="ic news">聞</span><span class="tx"><b>今日のニュース</b><span>読んで、その場で問題化</span></span><span class="arw">›</span></button>
+      <button class="menu-item" onclick="renderLaw()"><span class="ic law">法</span><span class="tx"><b>法令科目</b><span>択一・多肢選択・記述</span></span><span class="arw">›</span></button>
+      <button class="menu-item" onclick="renderReading()"><span class="ic read">文</span><span class="tx"><b>文章理解</b><span>要旨把握・空欄補充・並べ替え</span></span><span class="arw">›</span></button>
+    </div>
+  </div>`;
+}
+function backTo(fn,label){return `<button class="back" onclick="(${fn})()">${label||'演習にもどる'}</button>`;}
+
+/* JIJI */
+function renderJiji(){view.innerHTML=`<div class="view">${backTo('renderPractice')}<p class="eyebrow">CURRENT AFFAIRS</p><h2 class="h">時事の一問一答</h2><p class="sub">最新ニュースから政治・経済・社会・国際・デジタルの◯×を5問。</p><button class="btn seal" onclick="genJiji()">今日の時事を出題する</button></div>`;}
+async function jijiCall(useSearch){
+  const txt=await callClaude({useSearch,system:"行政書士『基礎知識（一般知識）』の作問者。出力は指定JSON配列のみ。前置き・マークダウン・引用記号なし。",user:(useSearch?`今日（${todayKey()}）時点の日本・世界の重要な時事を web検索で調べ、`:`近年〜最近の日本・世界の重要な時事をもとに、`)+`一般知識対策の正誤問題を5問。各問は短い記述文1つに正(true)/誤(false)。誤り問題は1か所だけ事実改変。解説は背景含め50〜90字。JSON配列のみ:[{"statement":"...","answer":true,"explanation":"...","topic":"政治"}]`});
+  const arr=extractJSON(txt).map(o=>({type:'ox',category:'時事',topic:o.topic,statement:o.statement,answer:!!o.answer,explanation:o.explanation}));
+  if(!arr.length)throw new Error("空の応答");return arr;
+}
+async function genJiji(){
+  showLoading('最新の時事を調べて作問しています…');
+  try{ startQuiz(await jijiCall(true),'時事一問一答'); }
+  catch(e){
+    try{ showLoading('検索が使えない環境のため、AIの知識をもとに作問しています…'); startQuiz(await jijiCall(false),'時事一問一答（最新検索なし）'); }
+    catch(e2){ showError(e2.message,genJiji); }
+  }
+}
+
+/* NEWS */
+function renderNews(){view.innerHTML=`<div class="view">${backTo('renderPractice')}<p class="eyebrow">DAILY NEWS</p><h2 class="h">今日のニュース</h2><p class="sub">一般知識に効くニュースを要約。気になった記事は問題にできます。</p><button class="btn primary" onclick="genNews()">今日のニュースを読む</button><div id="newsList"></div></div>`;}
+async function newsCall(useSearch){
+  const txt=await callClaude({useSearch,system:"行政書士試験対策の編集者。出力は指定JSON配列のみ。前置き・マークダウン禁止。",user:(useSearch?`今日（${todayKey()}）の日本・世界の重要ニュースを web検索で調べ、`:`近年〜最近の日本・世界の重要トピックをもとに、`)+`一般知識対策に関連しうる5件を要約。JSON配列のみ:[{"title":"見出し","summary":"60〜110字","category":"政治","point":"試験での着眼点30字"}]`});
+  return extractJSON(txt);
+}
+async function genNews(){
+  const list=document.getElementById('newsList');list.innerHTML=`<div class="loader"><div class="spinner"></div>ニュースを集めています…</div>`;
+  let arr=null,note='';
+  try{ arr=await newsCall(true); }
+  catch(e){
+    try{ list.innerHTML=`<div class="loader"><div class="spinner"></div>検索が使えない環境のため、AIの知識をもとに表示します…</div>`; arr=await newsCall(false); note=`<div class="npt" style="margin-bottom:12px">⚠ 最新のWeb検索が使えない環境です。これはAIの知識ベースの内容で、最新でない場合があります。常に最新で読むには自前デプロイ版（自分のAPIキー利用）がおすすめです。</div>`; }
+    catch(e2){ list.innerHTML=`<div class="errbox">ニュースを取得できませんでした（${esc(e2.message)}）。<br>APIキーの登録（道場→目標と設定）、ネット接続、利用枠を確認してください。</div>`; return; }
+  }
+  window._news=arr;
+  list.innerHTML=note+arr.map((n,i)=>`<div class="news-item"><span class="tag cat" style="display:inline-block;margin-bottom:8px">${esc(n.category||'')}</span><p class="nt">${esc(n.title)}</p><p class="ns">${esc(n.summary)}</p>${n.point?`<div class="npt"><b>着眼点</b>　${esc(n.point)}</div>`:''}<button class="btn ghost sm" style="width:100%" onclick="newsToQ(${i})">この記事を問題にする</button></div>`).join('');
+}
+async function newsToQ(i){const n=window._news[i];showLoading('このニュースから問題を作っています…');try{
+  const txt=await callClaude({system:"行政書士試験の作問者。出力はJSON配列のみ。前置き・マークダウン禁止。",user:`次のニュースを題材に一般知識の正誤問題を2問。\n見出し:${n.title}\n要約:${n.summary}\n誤り問題は1か所だけ改変。解説50〜90字。JSON配列のみ:[{"statement":"...","answer":true,"explanation":"...","topic":"${n.category||'社会'}"}]`});
+  const arr=extractJSON(txt).map(o=>({type:'ox',category:'時事',topic:o.topic,statement:o.statement,answer:!!o.answer,explanation:o.explanation}));startQuiz(arr,'ニュース演習');
+}catch(e){showError(e.message,()=>newsToQ(i));}}
+
+/* LAW */
+const LAW_CATS=['行政法','民法','憲法','基礎法学','商法・会社法','諸法令(行政書士法等)','情報通信・個人情報保護'];
+let lawCat='行政法',lawFmt='一問一答';
+function openLawCat(c){go('practice');lawCat=LAW_CATS.includes(c)?c:'行政法';renderLaw();}
+function renderLaw(){view.innerHTML=`<div class="view">${backTo('renderPractice')}<p class="eyebrow">LAW SUBJECTS</p><h2 class="h">法令科目</h2>
+  <p class="field-label">科目を選ぶ</p><div class="chips" id="catChips">${LAW_CATS.map(c=>`<button class="chip ${c===lawCat?'on':''}" onclick="setLawCat('${c}')">${c}</button>`).join('')}</div>
+  <p class="field-label">形式を選ぶ</p><div class="chips" id="fmtChips">${['一問一答','多肢選択','記述'].map(f=>`<button class="chip ${f===lawFmt?'on':''}" onclick="setLawFmt('${f}')">${f}</button>`).join('')}</div>
+  <button class="btn seal" onclick="genLaw()">この設定で出題する</button>
+  <p class="note">配点の中心は行政法（112点）と民法（76点）。記述は40字・各20点で行政法は行政事件訴訟法、民法は担保物権・債権・親族相続が頻出。多肢選択は判例文の穴埋め。法令は試験実施年度4月1日施行が基準です。</p></div>`;}
+function setLawCat(c){lawCat=c;document.querySelectorAll('#catChips .chip').forEach(b=>b.classList.toggle('on',b.textContent===c));}
+function setLawFmt(f){lawFmt=f;document.querySelectorAll('#fmtChips .chip').forEach(b=>b.classList.toggle('on',b.textContent===f));}
+async function genLaw(){showLoading(`${lawCat}の${lawFmt}を作問しています…`);try{
+  let items=[];
+  if(lawFmt==='一問一答'){
+    const txt=await callClaude({system:"行政書士試験の作問者。条文・判例に正確に基づく。最新施行法令（情報流通プラットフォーム対処法への改称等）を反映。出力はJSON配列のみ、前置き・マークダウン禁止。",user:`科目「${lawCat}」の正誤問題を5問。要件・効果・主体・期間・例外の正確な理解を問う。誤り問題は1点だけ改変。解説は条文番号や判例名に触れ60〜100字。JSON配列のみ:[{"statement":"...","answer":true,"explanation":"...","topic":"分野名"}]`});
+    items=extractJSON(txt).map(o=>({type:'ox',category:lawCat,format:'一問一答',topic:o.topic,statement:o.statement,answer:!!o.answer,explanation:o.explanation}));
+  }else if(lawFmt==='多肢選択'){
+    const txt=await callClaude({system:"行政書士試験の多肢選択式（空欄補充）作問者。判例文か条文を素材に。出力はJSONオブジェクトのみ、前置き・マークダウン禁止。",user:`科目「${lawCat}」の多肢選択式を1問。本文の空欄4つは【ア】【イ】【ウ】【エ】で示す。紛らわしい候補を含む語句プール12個。JSONオブジェクトのみ:{"passage":"...本文...","options":["語句",...12個],"answers":{"ア":"","イ":"","ウ":"","エ":""},"explanation":"60〜100字"}`});
+    const o=extractJSON(txt);items=[{type:'choice',category:lawCat,format:'多肢選択',passage:o.passage,options:o.options,answers:o.answers,explanation:o.explanation}];
+  }else{
+    const txt=await callClaude({system:"行政書士試験の記述式作問者。事例に40字程度で解答する問題。出力はJSONオブジェクトのみ、前置き・マークダウン禁止。",user:`科目「${lawCat}」の記述式を1問。${lawCat==='行政法'?'行政事件訴訟法など行政救済を題材に。':''}${lawCat==='民法'?'担保物権・債権・親族相続を題材に。':''}JSONオブジェクトのみ:{"prompt":"事例と問い","model":"模範解答40字程度","keywords":["キーワード3〜5個"],"explanation":"論点解説80〜120字"}`});
+    const o=extractJSON(txt);items=[{type:'essay',category:lawCat,format:'記述',prompt:o.prompt,model:o.model,keywords:o.keywords,explanation:o.explanation}];
+  }
+  if(!items.length)throw new Error("取得失敗");startQuiz(items,`${lawCat}・${lawFmt}`);
+}catch(e){showError(e.message,genLaw);}}
+
+/* READING */
+let readType='要旨把握';
+function renderReading(){view.innerHTML=`<div class="view">${backTo('renderPractice')}<p class="eyebrow">READING</p><h2 class="h">文章理解</h2><p class="sub">基礎知識で確実に取りたい3問分野。形式を選んで挑戦。</p>
+  <p class="field-label">形式を選ぶ</p><div class="chips" id="rtChips">${['要旨把握','空欄補充','並べ替え'].map(f=>`<button class="chip ${f===readType?'on':''}" onclick="setReadType('${f}')">${f}</button>`).join('')}</div>
+  <button class="btn seal" onclick="genReading()">出題する</button>
+  <p class="note">接続詞・指示語に印をつけながら読むのがコツ。文章理解は3問完答が足切り回避の王道です。</p></div>`;}
+function setReadType(f){readType=f;document.querySelectorAll('#rtChips .chip').forEach(b=>b.classList.toggle('on',b.textContent===f));}
+async function genReading(){showLoading('文章理解の問題を作っています…');try{
+  let prompt='';
+  if(readType==='要旨把握')prompt=`評論文を250字程度で作り、その要旨に最も合致する選択肢を選ばせる問題。本文をpassage、設問は「本文の要旨として最も適切なものはどれか」。選択肢は5つ（紛らわしいものを含む）。`;
+  else if(readType==='空欄補充')prompt=`論説文を230字程度で作り、文中の1か所を空欄【　】にして、入る語句・接続詞として最も適切な選択肢を選ばせる。passageに空欄を含める。選択肢5つ。`;
+  else prompt=`5つの短文（ア〜オ）に分解した文章を提示し、正しい順序を選ばせる。passageに「ア：…／イ：…」のように改行区切りで5文を入れる。選択肢は5通りの順序（例「イ→ア→エ→オ→ウ」）。`;
+  const txt=await callClaude({system:"行政書士試験『基礎知識・文章理解』の作問者。出力はJSONオブジェクトのみ、前置き・マークダウン禁止。",user:`${prompt}\nJSONオブジェクトのみ:{"passage":"本文","question":"設問文","options":["選択肢1",...5個],"answer":正解の番号(1〜5の整数),"explanation":"解説60〜100字"}`});
+  const o=extractJSON(txt);const item={type:'single',category:'文章理解',format:readType,passage:o.passage,question:o.question,options:o.options,answer:(parseInt(o.answer)||1)-1,explanation:o.explanation};
+  startQuiz([item],`文章理解・${readType}`);
+}catch(e){showError(e.message,genReading);}}
+
+/* ===== MOCK ===== */
+let mockSize=8;
+function renderMock(){view.innerHTML=`<div class="view"><p class="eyebrow">MOCK EXAM</p><h2 class="h">ミニ模試</h2><p class="sub">複数科目をミックスして時間を計測。本試験の感覚で力試し。</p>
+  <p class="field-label">問題数</p><div class="chips" id="msChips">${[8,16].map(n=>`<button class="chip seal-on ${n===mockSize?'on':''}" onclick="setMockSize(${n})">${n}問</button>`).join('')}</div>
+  <button class="btn seal" onclick="genMock()">模試を始める</button>
+  <p class="note">行政法・民法・憲法・基礎知識・時事からミックス出題。終了後に正答率と所要時間、合格ライン（60%）の目安を表示します。</p></div>`;}
+function setMockSize(n){mockSize=n;document.querySelectorAll('#msChips .chip').forEach(b=>b.classList.toggle('on',b.textContent===n+'問'));}
+async function genMock(){
+  showLoading(`模試を作成中… 0/${mockSize}問`);
+  const plans=['行政法・民法','憲法・基礎法学・商法','時事・一般知識','情報通信・個人情報保護・諸法令'];
+  let items=[];let pi=0;
+  try{
+    while(items.length<mockSize){
+      const need=Math.min(4,mockSize-items.length);const focus=plans[pi%plans.length];pi++;
+      const txt=await callClaude({system:"行政書士試験の作問者。条文・判例・時事に正確。出力はJSON配列のみ、前置き・マークダウン禁止。",user:`「${focus}」分野から正誤問題を${need}問。各問は短い記述文に正(true)/誤(false)。誤り問題は1点だけ改変。解説は30字以内に簡潔に。category欄に科目名を入れる。JSON配列のみ:[{"category":"行政法","statement":"...","answer":true,"explanation":"..."}]`});
+      const got=extractJSON(txt).map(o=>({type:'ox',category:o.category||focus,statement:o.statement,answer:!!o.answer,explanation:o.explanation}));
+      items=items.concat(got);
+      const ld=document.querySelector('.loader');if(ld)ld.innerHTML=`<div class="spinner"></div>模試を作成中… ${Math.min(items.length,mockSize)}/${mockSize}問`;
+    }
+    items=items.slice(0,mockSize);
+    startQuiz(items,`ミニ模試（${mockSize}問）`,'mock');
+  }catch(e){showError(e.message,genMock);}
+}
+
+/* ===== REVIEW ===== */
+let revFilter='すべて';
+function renderReview(){
+  if(!wrongQueue.length){view.innerHTML=`<div class="view"><div class="empty"><div class="em-seal">復</div><p style="font-weight:700;color:var(--ink)">復習待ちはありません</p><p style="font-size:13px">間違えた問題はここに集まり、忘れた頃に再出題されます。</p></div></div>`;return;}
+  const cats=['すべて',...Array.from(new Set(wrongQueue.map(w=>w.category||'時事')))];
+  const due=dueCount();
+  const filtered=wrongQueue.filter(w=>revFilter==='すべて'||(w.category||'時事')===revFilter);
+  view.innerHTML=`<div class="view"><p class="eyebrow">REVIEW</p><h2 class="h">まちがい復習</h2>
+    <p class="sub">${wrongQueue.length}問が復習待ち。${due>0?`うち ${due}問が今日の対象です。`:'今日の対象はありません。'}</p>
+    ${due>0?`<button class="btn seal" onclick="startReview(true)">今日の復習を始める（${due}問）</button><div style="height:10px"></div>`:''}
+    <button class="btn ghost" onclick="startReview(false)">${revFilter==='すべて'?'すべて':revFilter+'を'}まとめて復習</button>
+    <p class="field-label" style="margin-top:18px">科目でしぼる</p>
+    <div class="chips" id="rfChips">${cats.map(c=>`<button class="chip ${c===revFilter?'on':''}" onclick="setRevFilter('${escA(c)}')">${esc(c)}</button>`).join('')}</div>
+    <div class="divider"></div>
+    ${filtered.map(w=>`<div class="news-item" style="margin-bottom:10px"><span class="tag cat" style="display:inline-block;margin-bottom:6px">${esc(w.category||'')}${w.format?'・'+esc(w.format):''}</span> <span style="font-size:11px;color:var(--muted)">${(!w.due||w.due<=todayKey())?'復習日：今日':'次回：'+esc(w.due)}・定着度${(w.box||0)}/5</span><p style="margin:6px 0 0;font-size:14px;line-height:1.7">${esc((w.statement||w.prompt||w.question||w.passage||'').slice(0,80))}…</p><button class="btn ghost sm" style="margin-top:8px" onclick="removeWrong('${w._id}');renderReview()">覚えた（外す）</button></div>`).join('')}
+  </div>`;
+}
+function setRevFilter(c){revFilter=c;renderReview();}
+function startReview(dueOnly){
+  let pool=wrongQueue.filter(w=>revFilter==='すべて'||(w.category||'時事')===revFilter);
+  if(dueOnly){const t=todayKey();pool=pool.filter(w=>!w.due||w.due<=t);}
+  if(!pool.length){alert('対象の復習問題がありません');return;}
+  const items=JSON.parse(JSON.stringify(pool)).slice(0,20);items.forEach(it=>it._review=true);
+  startQuiz(items,'復習');
+}
+
+/* ===== DOJO (tools) ===== */
+function renderDojo(){view.innerHTML=`<div class="view"><p class="eyebrow">DOJO TOOLS</p><h2 class="h" style="margin-bottom:12px">道場ツール</h2>
+  <div class="menu">
+    <button class="menu-item" onclick="renderSim()"><span class="ic jiji">判</span><span class="tx"><b>合格判定シミュレーター</b><span>3つの足切りを同時チェック</span></span><span class="arw">›</span></button>
+    <button class="menu-item" onclick="renderStats()"><span class="ic law">統</span><span class="tx"><b>学習の統計</b><span>科目別の正答率を見える化</span></span><span class="arw">›</span></button>
+    <button class="menu-item" onclick="renderCoach()"><span class="ic news">評</span><span class="tx"><b>週次AIレビュー</b><span>データを分析して今週の重点を提案</span></span><span class="arw">›</span></button>
+    <button class="menu-item" onclick="renderAsk()"><span class="ic tool">問</span><span class="tx"><b>AI学習相談</b><span>行政書士の疑問を何でも質問</span></span><span class="arw">›</span></button>
+    <button class="menu-item" onclick="renderGoal()"><span class="ic mock">目</span><span class="tx"><b>目標と設定</b><span>1日の目標問題数</span></span><span class="arw">›</span></button>
+  </div></div>`;}
+function backDojo(){return `<button class="back" onclick="renderDojo()">道場にもどる</button>`;}
+
+/* simulator */
+let sim={taku:30,taki:14,kijutsu:30,kiso:9};
+function renderSim(){
+  view.innerHTML=`<div class="view">${backDojo()}<p class="eyebrow">PASS SIMULATOR</p><h2 class="h">合格判定シミュレーター</h2><p class="sub">自己採点の数字を入れると、3つの合格基準を同時に判定します。</p>
+    ${simRow('択一式 正答数','40問×4点',  'taku',0,40)}
+    ${simRow('多肢選択 得点','24点満点','taki',0,24)}
+    ${simRow('記述式 得点','60点満点','kijutsu',0,60)}
+    ${simRow('基礎知識 正答数','14問×4点','kiso',0,14)}
+    <div id="simResult" style="margin-top:18px"></div>
+  </div>`;
+  calcSim();
+}
+function simRow(name,sub,key,min,max){return `<div class="simrow"><div class="nm"><b>${name}</b><span>${sub}</span></div><div class="stepper"><button onclick="simStep('${key}',-1,${min},${max})">−</button><input id="sim-${key}" value="${sim[key]}" inputmode="numeric" onchange="simSet('${key}',this.value,${min},${max})"><button onclick="simStep('${key}',1,${min},${max})">＋</button></div></div>`;}
+function simStep(k,d,min,max){sim[k]=Math.max(min,Math.min(max,(sim[k]||0)+d));document.getElementById('sim-'+k).value=sim[k];calcSim();}
+function simSet(k,v,min,max){let n=parseInt(v)||0;n=Math.max(min,Math.min(max,n));sim[k]=n;document.getElementById('sim-'+k).value=n;calcSim();}
+function calcSim(){
+  const horei=sim.taku*4+sim.taki+sim.kijutsu; // /244
+  const kiso=sim.kiso*4; // /56
+  const total=horei+kiso; // /300
+  const pass=horei>=122&&kiso>=24&&total>=180;
+  document.getElementById('simResult').innerHTML=`
+    ${gauge('法令等',horei,244,122,horei>=122)}
+    ${gauge('基礎知識',kiso,56,24,kiso>=24)}
+    ${gauge('総合',total,300,180,total>=180)}
+    <div class="verdict ${pass?'pass':'fail'}">${pass?'合格圏（3基準クリア）':'基準未達'}</div>
+    <p class="note">合格は「法令122点以上・基礎知識24点以上・総合180点以上」の3条件すべてが必要。${!pass?(horei<122?'法令が不足。配点の大きい行政法・民法を強化。':kiso<24?'基礎知識が足切りライン未満。文章理解と個人情報保護で底上げを。':'総合点があと一歩。得意科目の取りこぼしを減らそう。'):'この調子で取りこぼしを防ぎましょう。'}</p>`;
+}
+function gauge(label,val,max,thr,ok){const p=Math.min(100,val/max*100);const tp=thr/max*100;return `<div class="gauge"><div class="gl"><span>${label}</span><b style="color:${ok?'var(--correct)':'var(--wrong)'}">${val} / ${max}</b></div><div class="track"><div class="fill" style="width:${p}%;background:${ok?'var(--correct)':'var(--seal)'}"></div><div class="thr" style="left:${tp}%"></div></div><div style="font-size:10.5px;color:var(--muted);margin-top:3px">合格ライン ${thr}点</div></div>`;}
+
+/* stats */
+function renderStats(){
+  const acc=progress.totalAnswered?Math.round(progress.totalCorrect/progress.totalAnswered*100):0;
+  const cats=Object.entries(progress.byCat).sort((a,b)=>(a[1].c/a[1].a)-(b[1].c/b[1].a));
+  const w=weakest();
+  const bars=cats.length?cats.map(([c,s])=>{const r=Math.round(s.c/s.a*100);const col=r>=70?'var(--correct)':r>=50?'var(--gold)':'var(--seal)';return `<div class="bar-item"><div class="bar-top"><b>${esc(c)}</b><span>${r}%（${s.c}/${s.a}）</span></div><div class="bar-track"><div class="bar-fill" style="width:${r}%;background:${col}"></div></div></div>`;}).join(''):'<p class="empty">まだ記録がありません。演習を始めましょう。</p>';
+  view.innerHTML=`<div class="view">${backDojo()}<p class="eyebrow">STATISTICS</p><h2 class="h">学習の統計</h2>
+    <div class="stat-row"><div class="stat"><b>${progress.totalAnswered}</b><span>累計問題</span></div><div class="stat"><b>${acc}<small style="font-size:14px">%</small></b><span>総合正答率</span></div><div class="stat"><b style="color:var(--seal)">${streakCount()}</b><span>連続日数</span></div></div>
+    ${w?`<div class="card reco" style="margin:14px 0"><div class="ic">弱</div><div class="tx"><b>最優先は「${w.cat}」</b><span>正答率 ${Math.round(w.acc*100)}%</span></div><button class="btn ghost sm" onclick="openLawCat('${w.cat}')">鍛える</button></div>`:''}
+    <p class="field-label" style="margin-top:8px">科目別 正答率（低い順）</p>
+    <div class="card pad">${bars}</div></div>`;
+}
+
+/* coach (weekly AI review) */
+async function renderCoach(){
+  const cached=await dbGet('coach');
+  view.innerHTML=`<div class="view">${backDojo()}<p class="eyebrow">WEEKLY REVIEW</p><h2 class="h">週次AIレビュー</h2><p class="sub">あなたの学習データをAIが分析し、今週の重点を提案します。</p><button class="btn seal" onclick="genCoach()">今週のレビューを作る</button><div id="coachOut" style="margin-top:16px">${cached?coachHtml(cached.data,cached.date):''}</div></div>`;
+}
+function coachHtml(d,date){return `<div class="card pad"><p style="font-size:11px;color:var(--muted);margin:0 0 8px">${esc(date||'')} 作成</p><p style="font-size:14.5px;line-height:1.85;margin:0 0 12px">${esc(d.summary||'')}</p>${(d.focus||[]).length?`<p class="field-label">今週の重点</p>${(d.focus||[]).map((f,i)=>`<div style="display:flex;gap:10px;margin-bottom:8px"><span style="font-family:var(--serif);color:var(--seal);font-weight:800">${i+1}</span><span style="font-size:14px">${esc(f)}</span></div>`).join('')}`:''}${d.cheer?`<p style="font-family:var(--serif);color:var(--seal);margin:12px 0 0;font-size:15px">${esc(d.cheer)}</p>`:''}</div>`;}
+async function genCoach(){
+  const out=document.getElementById('coachOut');out.innerHTML=`<div class="loader"><div class="spinner"></div>学習データを分析しています…</div>`;
+  const catStr=Object.entries(progress.byCat).map(([c,s])=>`${c}:${Math.round(s.c/s.a*100)}%(${s.a}問)`).join('、')||'記録なし';
+  const wrongCats=Array.from(new Set(wrongQueue.map(w=>w.category))).join('、')||'なし';
+  try{
+    const txt=await callClaude({system:"行政書士試験の学習コーチ。データに基づき具体的で励みになる助言を。出力はJSONオブジェクトのみ、前置き・マークダウン禁止。",user:`受験生の学習データ。\n累計${progress.totalAnswered}問・総合正答率${progress.totalAnswered?Math.round(progress.totalCorrect/progress.totalAnswered*100):0}%・${streakCount()}日連続。\n科目別正答率:${catStr}\n復習待ち科目:${wrongCats}\nこのデータをふまえ、行政書士試験合格に向けた週次レビューを作成。配点(行政法112/民法76)や足切り(基礎24点)も意識。JSONオブジェクトのみ:{"summary":"現状分析と良い点を120字","focus":["今週の重点を3つ、各40字"],"cheer":"励ましの一言30字"}`});
+    const d=extractJSON(txt);await dbSet('coach',{data:d,date:todayKey()});out.innerHTML=coachHtml(d,todayKey());
+  }catch(e){out.innerHTML=`<div class="errbox">レビューを作成できませんでした。少し待って再度お試しください。</div>`;}
+}
+
+/* ask (AI chat) */
+function renderAsk(){
+  window._chat=window._chat||[];
+  view.innerHTML=`<div class="view">${backDojo()}<p class="eyebrow">ASK AI</p><h2 class="h">AI学習相談</h2><p class="sub">条文の意味、判例、勉強法など何でも。短く具体的に答えます。</p>
+    <div id="chatLog">${window._chat.map(m=>`<div class="bubble ${m.role==='user'?'me':'ai'}">${esc(m.content)}</div>`).join('')||'<p style="font-size:13px;color:var(--muted)">例：「即時取得の要件は？」「行政手続法の聴聞と弁明の違いは？」「記述式の勉強法を教えて」</p>'}</div>
+    <label class="cb"><input type="checkbox" id="askSearch"> 最新の制度・時事も調べる（やや時間がかかります）</label>
+    <div class="chat-input"><textarea id="askInput" placeholder="質問を入力" rows="1"></textarea><button onclick="sendAsk()">送信</button></div></div>`;
+}
+async function sendAsk(){
+  const inp=document.getElementById('askInput');const q=inp.value.trim();if(!q)return;
+  const useSearch=document.getElementById('askSearch').checked;
+  window._chat.push({role:'user',content:q});inp.value='';
+  const log=document.getElementById('chatLog');
+  log.insertAdjacentHTML('beforeend',`<div class="bubble me">${esc(q)}</div><div class="bubble ai" id="thinking"><span style="color:var(--muted)">考えています…</span></div>`);
+  window.scrollTo(0,document.body.scrollHeight);
+  try{
+    const msgs=window._chat.map(m=>({role:m.role,content:m.content}));
+    const txt=await callClaude({system:"あなたは行政書士試験の専門講師。条文番号や判例名を挙げつつ、初学者にも分かるよう簡潔（300字以内目安）に答える。最新の法改正(情報流通プラットフォーム対処法への改称・拘禁刑など)に注意。",messages:msgs,useSearch});
+    window._chat.push({role:'assistant',content:txt});
+    document.getElementById('thinking').outerHTML=`<div class="bubble ai">${esc(txt)}</div>`;
+  }catch(e){const t=document.getElementById('thinking');if(t)t.outerHTML=`<div class="bubble ai" style="color:var(--wrong)">うまく答えられませんでした。もう一度お試しください。</div>`;}
+  window.scrollTo(0,document.body.scrollHeight);
+}
+
+/* goal & settings */
+function renderGoal(){
+  const has=!!getKey();
+  view.innerHTML=`<div class="view">${backDojo()}<p class="eyebrow">SETTINGS</p><h2 class="h">目標と設定</h2>
+    <p class="field-label">Anthropic APIキー</p>
+    <input id="keyInput" type="password" placeholder="sk-ant-..." value="${has?'••••••••••••••••':''}" autocomplete="off" style="width:100%;padding:12px;border:1px solid var(--line-strong);border-radius:10px;font-family:var(--sans);font-size:14px;background:var(--surface);color:var(--ink)">
+    <div style="display:flex;gap:8px;margin-top:8px"><button class="btn primary sm" style="flex:1" onclick="saveKey()">保存</button><button class="btn ghost sm" style="flex:1" onclick="clearKey()">削除</button></div>
+    <p class="note" style="margin-top:8px">状態：${has?'<b style="color:var(--correct)">登録済み</b>':'<b style="color:var(--wrong)">未登録</b>'}　／　キーはこの端末のブラウザ内だけに保存され、送信先は Anthropic だけです。<br>キーは <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style="color:var(--indigo)">console.anthropic.com</a> で発行できます（従量課金）。</p>
+    <div class="divider"></div>
+    <p class="field-label">1日の目標問題数</p><div class="chips">${[5,10,20,30].map(n=>`<button class="chip seal-on ${settings.dailyGoal===n?'on':''}" onclick="setGoal(${n})">${n}問</button>`).join('')}</div>
+    <p class="sub" style="margin-top:8px">ホームの達成リングがこの目標に連動します。</p>
+    <div class="divider"></div>
+    <button class="btn ghost" onclick="resetData()">学習データをリセット</button>
+    <p class="note">リセットすると連続日数・正答率・復習待ち・統計がすべて消えます（取り消せません）。APIキーは消えません。</p></div>`;
+}
+function saveKey(){const v=document.getElementById('keyInput').value.trim();if(!v||v[0]==='•'){alert('キーを入力してください');return;}try{localStorage.setItem('anthropicKey',v);}catch(e){alert('保存できませんでした（プライベートブラウズ等を確認）');return;}alert('保存しました。時事や法令の出題が使えます。');renderGoal();}
+function clearKey(){if(!confirm('登録したAPIキーを削除します。よろしいですか？'))return;try{localStorage.removeItem('anthropicKey');}catch(e){}renderGoal();}
+function setGoal(n){settings.dailyGoal=n;dbSet('settings',settings);renderGoal();}
+async function resetData(){if(!confirm('すべての学習データを削除します。よろしいですか？'))return;progress={totalAnswered:0,totalCorrect:0,studyDays:[],byCat:{},daily:{}};wrongQueue=[];await dbSet('progress',progress);await dbSet('wrongQueue',wrongQueue);await dbSet('coach',null);alert('リセットしました');go('home');}
+
+/* ===== shared ===== */
+function showLoading(m){view.innerHTML=`<div class="view"><div class="loader"><div class="spinner"></div>${esc(m)}</div></div>`;}
+function showError(m,retry){view.innerHTML=`<div class="view"><div class="errbox">うまく取得できませんでした（${esc(m)}）。<br><br>・APIキーが正しく登録されているか（道場 → 目標と設定）<br>・ネット接続<br>・APIの利用枠（クレジット残高）<br>を確認して、もう一度お試しください。</div><button class="btn ghost" style="margin-top:14px" onclick="(${retry.name})()">もう一度ためす</button></div>`;}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function escA(s){return esc(s).replace(/'/g,'&#39;');}
+function nl2br(s){return String(s).replace(/\n/g,'<br>');}
+
+/* review removal on next handled in handleSRS; keep nextQ simple */
+(async function(){const d=fmtDateJa();document.getElementById('datePill').innerHTML=`<b>${d.top}</b>${d.sub}`;await loadAll();renderHome();})();
+</script>
+</body>
+</html>
